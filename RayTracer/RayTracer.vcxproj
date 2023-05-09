@@ -129,7 +129,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Color.hpp" />
+    <ClInclude Include="Hitter.hpp" />
     <ClInclude Include="Ray.hpp" />
+    <ClInclude Include="Sphere.hpp" />
+    <ClInclude Include="Utils.hpp" />
     <ClInclude Include="Vec3.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -7,65 +7,10 @@
 #include "Color.hpp"
 #include "Ray.hpp"
 
+#include "Sphere.hpp"
 
 #define RAYTRACER 1
 
-// Utility function to clamp a value between a minimum and maximum
-double clamp(double value, double min, double max) {
-    return std::fmax(min, std::fmin(value, max));
-}
-
-// Utility function to compute the dot product of two vectors
-double dot(const Vec3& v, const Vec3& n) {
-    return  v.x * n.x + v.y * n.y + v.z * n.z;
-}
-
-// Utility function to compute the cross product of two vectors
-Vec3 cross(const Vec3& a, const Vec3& b) {
-    return Vec3(a.y * b.z - a.z * b.y,
-        a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x);
-}
-
-// Utility function to compute the reflect direction of a vector given a surface normal
-Vec3 reflect(const Vec3& v, const Vec3& n) {
-    return v - n * 2 * dot(v, n);
-}
-
-//// Utility function to compute the reflect direction of a vector given a surface normal
-//Vec3 normalize(const Vec3& v) {
-//    return v - n * 2 * dot(v, n);
-//}
-
-class Sphere {
-
-public:
-    Vec3 _sphereCenter;
-    double _sphereRadius;
-    Color _sphereColor;
-
-    Sphere() {}
-    Sphere(const Vec3& center, double radius, Color color) : _sphereCenter(center), _sphereRadius(radius), _sphereColor(color) {}
-
-};
-
-
-// Compute the intersection of a ray with a sphere
-
-//calculate the "t" for which A + tB hits the sphere
-double intersectSphere(const Ray& ray, const Vec3& center, double radius) {
-    Vec3 oc = ray.getOrigin() - center;
-    auto a = dot(ray.getDirection(), ray.getDirection());
-    auto b = 2 * dot(oc, ray.getDirection());
-    auto c = dot(oc, oc) - radius * radius;
-    auto discriminant = b * b - 4 * a * c;
-    if (discriminant < 0) { //no real solutions
-        return -1.0;
-    }
-    else {//one or two solutions
-        return (-b - std::sqrt(discriminant)) / (2 * a);
-    }
-}
 
 //Utility function to return the ray color
 Color rayColor(const Ray& ray) {
