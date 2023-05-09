@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Color.hpp" />
+    <ClInclude Include="..\include\HitterList.hpp" />
     <ClInclude Include="..\include\Hitter.hpp" />
     <ClInclude Include="..\include\Ray.hpp" />
     <ClInclude Include="..\include\Sphere.hpp" />

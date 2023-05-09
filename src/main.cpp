@@ -8,34 +8,29 @@
 #include "Ray.hpp"
 
 #include "Hitter.hpp"
+#include "HitterList.hpp"
+
+
 #include "Sphere.hpp"
 #include "Utils.hpp"
 
 #define RAYTRACER 1
 
 
-Color rayColor(const Ray& ray) {
+Color rayColor(const Ray& ray, const HitterList& world) {
 
-    /* Define the scene objects here */
-    //Sphere
     {
-        Vec3 center(0, 0, -1);
-        auto radius = 0.5;
-        Color color(1, 0, 0);
-
         hit_record rec;
 
-        Sphere sphere(center, radius);
-        auto result = sphere.hit(ray, 0, 5.0, rec);
-  
-        if (!result) //background
+        if (world.hit(ray, 0, std::numeric_limits<double>::infinity(), rec))
+            return 0.5 * Color(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
+
+        //background
         {
             auto unitDirection = ray.getDirection().normalize();
             auto t = 0.5 * (unitDirection.y + 1.0);
             return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
         }
-        else
-            return 0.5 * Color(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
 
     }
 
@@ -48,10 +43,6 @@ int main() {
     const int width = 400;
     const int height = static_cast<int>(width / aspect_ratio);
 
-    // Camera position and orientation
-    Vec3 cameraDirection(0, 0, -1);
-    Vec3 cameraUp(0, 1, 0);
-
     auto viewport_height = 2.0;
     auto viewport_width = aspect_ratio * viewport_height;
     auto focal_length = 1.0;
@@ -60,6 +51,15 @@ int main() {
     auto horizontal = Vec3(viewport_width, 0, 0);
     auto vertical = Vec3(0, viewport_height, 0);
     auto lower_left_corner = origin - horizontal / 2 - vertical / 2 - Vec3(0, 0, focal_length);
+
+
+    HitterList world;
+
+    auto s1 = std::make_shared<Sphere>(Vec3(0, 0, -1), 0.5);
+    auto s2 = std::make_shared<Sphere>(Vec3(0, -100, -1), 100);
+
+    world.add(s1);
+    world.add(s2);
 
 
     // Render the scene
@@ -73,7 +73,7 @@ int main() {
 
 #if RAYTRACER
             {
-                pixels[j * width + i] = rayColor(ray);
+                pixels[j * width + i] = rayColor(ray, world);
 
             }
 #endif

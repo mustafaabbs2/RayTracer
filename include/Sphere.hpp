@@ -46,8 +46,10 @@ bool Sphere::hit(const Ray& ray, double tmin, double tmax, hit_record& rec) cons
     //if not returned yet, calculate t, p, normal for the hit
     rec.t = root;
     rec.p = ray.pointAt(rec.t);
-    rec.normal = (rec.p - _sphereCenter) / _sphereRadius;
+    rec.normal = (rec.p - _sphereCenter) / _sphereRadius; //note: here, normals always
+    //point outward from the surface. You need a face side later
 
+    return true;
   }
 
 
