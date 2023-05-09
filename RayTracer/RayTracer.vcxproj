@@ -128,15 +128,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Color.hpp" />
-    <ClInclude Include="Hitter.hpp" />
-    <ClInclude Include="Ray.hpp" />
-    <ClInclude Include="Sphere.hpp" />
-    <ClInclude Include="Utils.hpp" />
-    <ClInclude Include="Vec3.hpp" />
+    <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main.cpp" />
+    <ClInclude Include="..\include\Color.hpp" />
+    <ClInclude Include="..\include\Hitter.hpp" />
+    <ClInclude Include="..\include\Ray.hpp" />
+    <ClInclude Include="..\include\Sphere.hpp" />
+    <ClInclude Include="..\include\Utils.hpp" />
+    <ClInclude Include="..\include\Vec3.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

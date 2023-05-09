@@ -7,40 +7,38 @@
 #include "Color.hpp"
 #include "Ray.hpp"
 
+#include "Hitter.hpp"
 #include "Sphere.hpp"
+#include "Utils.hpp"
 
 #define RAYTRACER 1
 
 
-//Utility function to return the ray color
 Color rayColor(const Ray& ray) {
 
     /* Define the scene objects here */
-
     //Sphere
     {
-        Vec3 sphereCenter(0, 0, -1);
-        auto sphereRadius = 0.5;
-        Color sphereColor(1, 0, 0);
-        Sphere sphere(sphereCenter, sphereRadius, sphereColor);
-        auto t = intersectSphere(ray, sphere._sphereCenter, sphere._sphereRadius);
+        Vec3 center(0, 0, -1);
+        auto radius = 0.5;
+        Color color(1, 0, 0);
 
-        if (t > 0)
+        hit_record rec;
+
+        Sphere sphere(center, radius);
+        auto result = sphere.hit(ray, 0, 5.0, rec);
+  
+        if (!result) //background
         {
-            //return sphere._sphereColor; /this is a solution without shading..
-            auto pt = ray.pointAt(t); //point coordinates at t (intersection)
-            auto normal = (pt - sphere._sphereCenter).normalize();
-            return 0.5 * Color(normal.x + 1, normal.y + 1, normal.z + 1);
+            auto unitDirection = ray.getDirection().normalize();
+            auto t = 0.5 * (unitDirection.y + 1.0);
+            return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
         }
+        else
+            return 0.5 * Color(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
 
     }
 
-    //Background
-    {
-        auto unitDirection = ray.getDirection().normalize();
-        auto t = 0.5 * (unitDirection.y + 1.0);
-        return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
-    }
 }
 
 int main() {
