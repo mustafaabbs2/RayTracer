@@ -13,6 +13,8 @@
 
 #include "Sphere.hpp"
 #include "Utils.hpp"
+#include "Constants.hpp"
+
 
 #define RAYTRACER 1
 
@@ -22,7 +24,7 @@ Color rayColor(const Ray& ray, const HitterList& world) {
     {
         hit_record rec;
 
-        if (world.hit(ray, 0, std::numeric_limits<double>::infinity(), rec))
+        if (world.hit(ray, 0, infinity, rec))
             return 0.5 * Color(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
 
         //background
@@ -56,7 +58,7 @@ int main() {
     HitterList world;
 
     auto s1 = std::make_shared<Sphere>(Vec3(0, 0, -1), 0.5);
-    auto s2 = std::make_shared<Sphere>(Vec3(0, -100, -1), 100);
+    auto s2 = std::make_shared<Sphere>(Vec3(0, -1, -1), 0.9);
 
     world.add(s1);
     world.add(s2);
