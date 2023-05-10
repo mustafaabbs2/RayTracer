@@ -1,5 +1,16 @@
 #pragma once
 
+#include <random>
+
+// Returns a random real in [0,1).
+
+inline double random_double() {
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::mt19937 generator;
+    return distribution(generator);
+}
+
+
 // Utility function to clamp a value between a minimum and maximum
 double clamp(double value, double min, double max) {
     return std::fmax(min, std::fmin(value, max));

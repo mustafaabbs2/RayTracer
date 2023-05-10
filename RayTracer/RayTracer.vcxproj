@@ -131,6 +131,7 @@
     <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Camera.hpp" />
     <ClInclude Include="..\include\Color.hpp" />
     <ClInclude Include="..\include\Constants.hpp" />
     <ClInclude Include="..\include\HitterList.hpp" />

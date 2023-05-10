@@ -26,9 +26,9 @@ void PPMWriter::WriteFile(const std::vector<Color>& pixels) const
     for (int j = 0; j < _height; j++) {
         for (int i = 0; i < _width; i++) {
             Color pixel = pixels[j *_width + i];
-            int r = (int)(255 * clamp(pixel.r, 0, 1));
-            int g = (int)(255 * clamp(pixel.g, 0, 1));
-            int b = (int)(255 * clamp(pixel.b, 0, 1));
+            int r = static_cast<int>(255 * clamp(pixel.r, 0, 1));
+            int g = static_cast<int>(255 * clamp(pixel.g, 0, 1));
+            int b = static_cast<int>(255 * clamp(pixel.b, 0, 1));
             outfile << r << " " << g << " " << b << " ";
         }
         outfile << "\n";
