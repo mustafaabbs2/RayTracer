@@ -11,27 +11,40 @@ class PPMWriter : public WriterInterface
 
 {
 public:
-	int _width, _height;
-	PPMWriter(const int width, const int height) :_width(width), _height(height) {}
+	PPMWriter(std::string filename, const int width, const int height) :_filename(filename), _width(width), _height(height) {
+        _outfile = std::make_unique<std::ofstream>(filename);
 
-	void WriteFile(const std::vector<Color>& pixels) const override; 
+        if (!filename.empty())
+            *_outfile << "P3\n" << _width << " " << _height << "\n255\n";
+        else
+            throw std::exception("Empty file name \n");
+    }
+
+	void WritePixelToFile(const Color& pixel, const int samplesPerPixel) const override;
+
+private:
+    int _width, _height;
+    std::string _filename;
+    std::unique_ptr<std::ofstream> _outfile;
 
 };
 
 // Output the image in PPM format
-void PPMWriter::WriteFile(const std::vector<Color>& pixels) const 
+void PPMWriter::WritePixelToFile(const Color& pixel, const int samplesPerPixel) const
 {
-    std::ofstream outfile("output.ppm");
-    outfile << "P3\n" << _width << " " << _height << "\n255\n";
-    for (int j = 0; j < _height; j++) {
-        for (int i = 0; i < _width; i++) {
-            Color pixel = pixels[j *_width + i];
-            int r = static_cast<int>(255 * clamp(pixel.r, 0, 1));
-            int g = static_cast<int>(255 * clamp(pixel.g, 0, 1));
-            int b = static_cast<int>(255 * clamp(pixel.b, 0, 1));
-            outfile << r << " " << g << " " << b << " ";
-        }
-        outfile << "\n";
-    }
+    auto r = pixel.r;
+    auto g = pixel.g;
+    auto b = pixel.b;
 
+    auto scale = 1.0 / samplesPerPixel;
+    r *= scale;
+    g *= scale;
+    b *= scale;
+
+    auto r_p = static_cast<int>(255 * clamp(r, 0, 1));
+    auto g_p = static_cast<int>(255 * clamp(g, 0, 1));
+    auto b_p = static_cast<int>(255 * clamp(b, 0, 1));
+
+    *_outfile << r_p << " " << g_p << " " << b_p << " " << "\n";
+        
 }

@@ -16,7 +16,7 @@
 #include "Camera.hpp"
 
 
-#define RAYTRACER 1
+#define WRITE 1
 
 
 Color rayColor(const Ray& ray, const HitterList& world) {
@@ -42,8 +42,6 @@ int main() {
 
     std::cout << "Preparing ray tracer... " << std::endl;
 
-
-
     HitterList world;
 
     auto s1 = std::make_shared<Sphere>(Vec3(0, 0, -1), 0.5);
@@ -59,26 +57,29 @@ int main() {
     auto camera = std::make_unique<Camera>(aspect_ratio);
 
 
-    // Render the scene
-    std::vector<Color> pixels(width * height);
-    for (int j = 0; j < height; ++j) {
-        for (int i = 0; i < width; ++i) {
-            auto x = double(i) / (width + 1);
-            auto y = double(j) / (height + 1);
+    //antialiasing
+    const int samplesPerPixel = 10;
 
-            Ray ray = camera->getRay(x,y);
-#if RAYTRACER
-            {
-                pixels[j * width + i] = rayColor(ray, world);
+    auto writer = std::make_unique<PPMWriter>("sphere_antialiased.ppm", width, height);
+    
+    for (size_t j = 0; j < height; ++j) {
+        for (size_t i = 0; i < width; ++i) {
+            Color cumulativeColor(0, 0, 0);
+            for (size_t s = 0; s < samplesPerPixel; ++s) {
+                auto x = double(i + random_double()) / (width - 1);
+                auto y = double(j + random_double()) / (height - 1);
+#if WRITE
+                {
+                    Ray ray = camera->getRay(x, y);
+                    cumulativeColor = cumulativeColor + rayColor(ray, world);
+                }
 
             }
-#endif
 
+           writer->WritePixelToFile(cumulativeColor, samplesPerPixel);
+#endif
         }
     }
-
-    auto writer = std::make_unique<PPMWriter>(width, height);
-    writer->WriteFile(pixels);
 
     return 0;
 }
