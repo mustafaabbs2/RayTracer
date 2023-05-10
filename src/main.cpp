@@ -9,8 +9,7 @@
 
 #include "Hitter.hpp"
 #include "HitterList.hpp"
-
-
+#include "PPMWriter.hpp"
 #include "Sphere.hpp"
 #include "Utils.hpp"
 #include "Constants.hpp"
@@ -82,19 +81,33 @@ int main() {
 
         }
     }
-    // Output the image in PPM format
-    std::ofstream outfile("output.ppm");
-    outfile << "P3\n" << width << " " << height << "\n255\n";
-    for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width; i++) {
-            Color pixel = pixels[j * width + i];
-            int r = (int)(255 * clamp(pixel.r, 0, 1));
-            int g = (int)(255 * clamp(pixel.g, 0, 1));
-            int b = (int)(255 * clamp(pixel.b, 0, 1));
-            outfile << r << " " << g << " " << b << " ";
+
+    auto writer = std::make_unique<PPMWriter>(width, height);
+    writer->WriteFile(pixels);
+
+    
+    
+    //
+    //std::ofstream outfile2("output2.ppm");
+
+    //outfile2 << "P3\n" << width << ' ' << height << "\n255\n";
+
+ /*   for (int j = height - 1; j >= 0; --j) {
+        for (int i = 0; i < width; ++i) {
+            auto r = double(i) / (width - 1);
+            auto g = double(j) / (height - 1);
+            auto b = 0.25;
+
+            int ir = static_cast<int>(255.999 * r);
+            int ig = static_cast<int>(255.999 * g);
+            int ib = static_cast<int>(255.999 * b);
+
+            outfile2 << ir << ' ' << ig << ' ' << ib << '\n';
         }
-        outfile << "\n";
-    }
+    }*/
+
+
+
 
     return 0;
 }

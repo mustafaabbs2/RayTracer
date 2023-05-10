@@ -135,10 +135,12 @@
     <ClInclude Include="..\include\Constants.hpp" />
     <ClInclude Include="..\include\HitterList.hpp" />
     <ClInclude Include="..\include\Hitter.hpp" />
+    <ClInclude Include="..\include\PPMWriter.hpp" />
     <ClInclude Include="..\include\Ray.hpp" />
     <ClInclude Include="..\include\Sphere.hpp" />
     <ClInclude Include="..\include\Utils.hpp" />
     <ClInclude Include="..\include\Vec3.hpp" />
+    <ClInclude Include="..\include\WriterInterface.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
