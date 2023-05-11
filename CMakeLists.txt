@@ -18,6 +18,7 @@ set(SOURCES
     src/Core/Camera.cpp
     src/Writers/PPMWriter.cpp
     src/Utils/Utils.cpp
+    src/Utils/Logger.cpp
 )
 
 # Add executable target

@@ -14,12 +14,26 @@
 template <typename OutputMethod>
 class Logger : private OutputMethod {
 public:
+    Logger() {}
+    ~Logger() {}
+    void startTimer();
+    void endTimer();
+    void sleep(size_t seconds);
+    void log(const std::string& message);
 
-    void startTimer() {
+private:
+    std::chrono::milliseconds _duration;
+    std::chrono::steady_clock::time_point _start, _stop;
+};
+
+
+template <typename OutputMethod>
+    void Logger<OutputMethod>::startTimer() {
         _start = std::chrono::high_resolution_clock::now();
     }
 
-    void endTimer() {
+template <typename OutputMethod>
+    void Logger<OutputMethod>::endTimer() {
         _stop = std::chrono::high_resolution_clock::now();
         _duration = std::chrono::duration_cast<std::chrono::milliseconds>(_stop - _start);
 
@@ -28,49 +42,31 @@ public:
         OutputMethod::output(oss.str());
     }
 
-    void sleep(size_t seconds)
+template <typename OutputMethod>
+    void Logger<OutputMethod>::sleep(size_t seconds)
     {
         std::chrono::seconds sleepDuration(seconds);
         std::this_thread::sleep_for(sleepDuration);
 
     }
 
-    void log(const std::string& message)
+template <typename OutputMethod>
+    void Logger<OutputMethod>::log(const std::string& message)
     {
             OutputMethod::output(message);
     }
 
 
-private:
-    std::chrono::milliseconds _duration;
-    std::chrono::steady_clock::time_point _start, _stop;
-
-};
-
-
 class ConsoleOutput {
 public:
-    static void output(const std::string& message) {
-        std::cout << message << std::endl;
-    }
+    static void output(const std::string& message);
 };
 
 class FileOutput {
 public:
-    FileOutput() {
-        if (std::filesystem::exists("log.txt"))
-            std::filesystem::remove("log.txt");
-    }
-    ~FileOutput() {
-        _outfile.close();
-    }
-
-    void output(const std::string& message) {
-        _outfile = std::ofstream("log.txt", std::ofstream::app);
-        _outfile << message << std::endl;
-
-    }
+    FileOutput();
+    ~FileOutput();
+    void output(const std::string& message);
 private:
     std::ofstream _outfile;
-
 };
