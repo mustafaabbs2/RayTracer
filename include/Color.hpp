@@ -22,8 +22,6 @@ public:
         return Color(r + other.r, g + other.g, b + other.b);
     }
 
-    void print();
-
 };
 
 Color operator*(double x, const Color& other) {
@@ -34,7 +32,5 @@ Color operator*(const Color& other, double x) {
     return Color(x * other.r, x * other.g, x * other.b);
 }
 
-void Color::print()
-{
-    std::cout << "Testing function outside class \n";
-}
+
+
