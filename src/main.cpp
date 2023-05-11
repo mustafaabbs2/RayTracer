@@ -10,9 +10,9 @@
 #include "Hitter.hpp"
 #include "Material.hpp"
 #include "HitterList.hpp"
-#include "PPMWriter.hpp"
 #include "Sphere.hpp"
 #include "Utils.hpp"
+#include "PPMWriter.hpp"
 #include "Constants.hpp"
 #include "Camera.hpp"
 #include "Logger.hpp"
@@ -70,15 +70,19 @@ int main() {
 
     const int maxDepth = 50; //ray recursion
 
-    auto camera = std::make_unique<Camera>(aspect_ratio);
+    auto logger = std::make_unique<Logger<ConsoleOutput>>();
 
+    logger->log("Camera creation");
+    logger->startTimer();
+    logger->sleep(5);
+    auto camera = std::make_unique<Camera>(aspect_ratio);
+    logger->endTimer();
     //antialiasing
     const int samplesPerPixel = 1;
 
     auto writer = std::make_unique<PPMWriter>("sphere_antialiased.ppm", width, height);
 
-    auto logger = std::make_unique<Logger<FileOutput>>();
-    logger->log("Starting time monitoring \n");
+    logger->log("Image generation");
 
     logger->startTimer();
     

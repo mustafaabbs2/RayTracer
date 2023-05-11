@@ -24,69 +24,26 @@ public:
     double x, y, z;
 
     Vec3() {}
-    Vec3(double x, double y, double z) : x(x), y(y), z(z) {}
+    Vec3(double x, double y, double z);
 
-    Vec3 operator+(const Vec3& v) const {
-        return Vec3(x + v.x, y + v.y, z + v.z);
-    }
-
-    Vec3 operator-(const Vec3& v) const {
-        return Vec3(x - v.x, y - v.y, z - v.z);
-    }
-
-
-    Vec3 operator/(double s) const {
-        return Vec3(x / s, y / s, z / s);
-    }
-
-    double dot(const Vec3& v) const {
-        return x * v.x + y * v.y + z * v.z;
-    }
-
-
-    Vec3 cross(const Vec3& v) const {
-        return Vec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
-    }
-
-    inline double length() const {
-        return std::sqrt(x * x + y * y + z * z);
-    }
-
-    double lengthSquared() const {
-        return (x * x + y * y + z * z);
-    }
-
-    Vec3 normalize() const { //use it to make a unit vector
-        double len = length();
-        return Vec3(x / len, y / len, z / len);
-    }
+    Vec3 operator+(const Vec3& v) const;
+    Vec3 operator-(const Vec3& v) const;
+    Vec3 operator/(double s) const;
+    double dot(const Vec3& v) const;
+    Vec3 cross(const Vec3& v) const;
+    inline double length() const;
+    double lengthSquared() const;
+    Vec3 normalize() const;
     //note: type qualifiers aren't allowed on static functions since they don't access the this pointer of a class
     //i.e. static functions cannot have a const or volatile type qualifier
-    static Vec3 random() {
-        return Vec3(random_double(), random_double(), random_double());
-    }
-
-    static Vec3 random(double min, double max) {
-        return Vec3(random_double(min, max), random_double(min, max), random_double(min, max));
-    }
+    static Vec3 random();
+    static Vec3 random(double min, double max);
 
 };
 
-//define binary operators outside to allow dual sided operations
-Vec3 operator*(double s, const Vec3& other) {
-    return Vec3(other.x * s, other.y * s, other.z * s);
-}
-
-Vec3 operator*(const Vec3& other, double s) {
-    return Vec3(other.x * s, other.y * s, other.z * s);
-}
-
-Vec3 randomInUnitSphere() {
-    while (true) {
-        auto p = Vec3::random(-1, 1);
-        if (p.lengthSquared() >= 1) continue;
-        return p;
-    }
-}
+//should be in a namespace
+Vec3 operator*(double s, const Vec3& other);
+Vec3 operator*(const Vec3& other, double s);
+Vec3 randomInUnitSphere();
 
 

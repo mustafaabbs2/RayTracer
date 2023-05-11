@@ -7,8 +7,13 @@ message("Configuring RayTracer..")
 # Set C++ standard to C++11
 set(CMAKE_CXX_STANDARD 17)
 
+set(SOURCES
+    src/main.cpp
+    src/Writers/PPMWriter.cpp
+)
+
 # Add executable target
-add_executable(RayTracer src/main.cpp)
+add_executable(RayTracer ${SOURCES})
 
 # Add include directories
 target_include_directories(RayTracer PRIVATE include/)

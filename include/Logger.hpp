@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+#include <thread>
+
 //this doesn't need to be done, I was just trying to use templates
 //This could be done easily with inheritance anyway
 
@@ -22,8 +24,15 @@ public:
         _duration = std::chrono::duration_cast<std::chrono::milliseconds>(_stop - _start);
 
         std::ostringstream oss;
-        oss << "\nTime taken for image generation:  " << _duration.count() << " milliseconds" << std::endl;
+        oss << "\nTime taken:  " << _duration.count() << " milliseconds" << std::endl;
         OutputMethod::output(oss.str());
+    }
+
+    void sleep(size_t seconds)
+    {
+        std::chrono::seconds sleepDuration(seconds);
+        std::this_thread::sleep_for(sleepDuration);
+
     }
 
     void log(const std::string& message)

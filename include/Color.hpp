@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 
 // Define a color class with red, green, and blue components
