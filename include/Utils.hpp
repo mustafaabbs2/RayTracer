@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Vec3.hpp"
 
 // Utility function to clamp a value between a minimum and maximum
 double clamp(double value, double min, double max);

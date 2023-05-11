@@ -9,7 +9,15 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCES
     src/main.cpp
+    src/Core/Color.cpp
+    src/Core/HitterList.cpp
+    src/Core/Material.cpp
+    src/Core/Ray.cpp
+    src/Core/Vec3.cpp
+    src/Core/Sphere.cpp
+    src/Core/Camera.cpp
     src/Writers/PPMWriter.cpp
+    src/Utils/Utils.cpp
 )
 
 # Add executable target

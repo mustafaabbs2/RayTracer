@@ -1,5 +1,6 @@
 
 #include "Vec3.hpp"
+#include <random>
 
 // Returns a random real in [0,1).
 double random_double() {

@@ -55,7 +55,8 @@ int main() {
 
     HitterList world;
 
-    auto matptr = std::make_shared<Material>();
+    //auto matptr = std::make_shared<Material>();
+    auto matptr = nullptr;
 
     auto s1 = std::make_shared<Sphere>(Vec3(0, 0, -1), 0.5, matptr);
     auto s2 = std::make_shared<Sphere>(Vec3(0, -100.5, -1), 100, matptr);

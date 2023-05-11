@@ -8,8 +8,8 @@
 class Camera {
 
 public:
-	Camera(const double aspect_ratio) ;
-    Ray getRay(double x, double y) ;
+	Camera(const double aspect_ratio);
+    Ray getRay(double x, double y);
 
 private:
     Vec3 origin, horizontal, vertical, lower_left_corner;

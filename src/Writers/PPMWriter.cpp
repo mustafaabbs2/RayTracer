@@ -1,4 +1,5 @@
 #include "PPMWriter.hpp"
+#include "Utils.hpp"
 
 PPMWriter::PPMWriter(std::string filename, const int width, const int height) :_filename(filename), _width(width), _height(height) 
 {

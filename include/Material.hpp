@@ -10,7 +10,8 @@ namespace Hit
 } // namespace Hit
 
 
+//Abstract
 class Material {
 public:
-	bool scatter(const Ray& ray, const Hit::hit_record& rec, Color& attenuation, Ray& scattered);
+	virtual bool scatter(const Ray& ray, const Hit::hit_record& rec, Color& attenuation, Ray& scattered) const = 0;
 };
