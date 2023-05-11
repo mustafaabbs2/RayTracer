@@ -23,7 +23,7 @@ public:
 
 private:
     std::chrono::milliseconds _duration;
-    std::chrono::steady_clock::time_point _start, _stop;
+    std::chrono::high_resolution_clock::time_point _start, _stop;
 };
 
 
