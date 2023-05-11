@@ -1,7 +1,10 @@
 #pragma once
 
 #include "WriterInterface.hpp"
+#include "Utils.hpp"
 #include <fstream>
+#include <memory>
+
 
 class PPMWriter : public WriterInterface 
 
