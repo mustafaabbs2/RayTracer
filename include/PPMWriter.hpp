@@ -17,7 +17,7 @@ public:
         if (!filename.empty())
             *_outfile << "P3\n" << _width << " " << _height << "\n255\n";
         else
-            throw std::exception("Empty file name \n");
+          throw std::runtime_error("Empty file name \n");
     }
 
 	void WritePixelToFile(const Color& pixel, const int samplesPerPixel) const override;
