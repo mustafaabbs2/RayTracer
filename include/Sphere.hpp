@@ -7,6 +7,7 @@
 #include "Ray.hpp"
 #include "Utils.hpp"
 #include "Hitter.hpp"
+#include "Material.hpp"
 
 
 class Sphere : public Hitter {
@@ -14,9 +15,10 @@ class Sphere : public Hitter {
 public:
     Vec3 _sphereCenter;
     double _sphereRadius;
+    std::shared_ptr<Material> _matptr;
 
     Sphere() {}
-    Sphere(const Vec3& center, double radius) : _sphereCenter(center), _sphereRadius(radius) {}
+    Sphere(const Vec3& center, double radius, std::shared_ptr<Material> matptr) : _sphereCenter(center), _sphereRadius(radius), _matptr(matptr) {}
 
     virtual bool hit(const Ray& ray, double tmin, double tmax, hit_record& rec) const override;
 };
@@ -48,6 +50,8 @@ bool Sphere::hit(const Ray& ray, double tmin, double tmax, hit_record& rec) cons
     rec.p = ray.pointAt(rec.t);
     rec.normal = (rec.p - _sphereCenter) / _sphereRadius; //note: here, normals always
     //point outward from the surface. You need a face side later
+
+    rec.matptr = _matptr;
 
     return true;
   }

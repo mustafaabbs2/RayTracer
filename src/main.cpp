@@ -14,6 +14,10 @@
 #include "Utils.hpp"
 #include "Constants.hpp"
 #include "Camera.hpp"
+#include "Material.hpp"
+#include "Logger.hpp"
+
+//Note: the headers currently contain definitions too, they need to be put in their own source files to avoid high compilation times on changes
 
 
 #define WRITE 1
@@ -48,6 +52,7 @@ Color rayColor(const Ray& ray, const HitterList& world, int depth) {
 
 int main() {
 
+
     std::cout << "Preparing ray tracer... " << std::endl;
 
     HitterList world;
@@ -70,6 +75,10 @@ int main() {
     const int samplesPerPixel = 10;
 
     auto writer = std::make_unique<PPMWriter>("sphere_antialiased.ppm", width, height);
+
+    auto logger = std::make_unique<Logger>();
+
+    logger->startTimer();
     
     for (size_t j = height; j > 0; --j) {
         for (size_t i = 0; i < width; ++i) {
@@ -89,6 +98,8 @@ int main() {
 #endif
         }
     }
+
+    logger->endTimer();
 
     return 0;
 }

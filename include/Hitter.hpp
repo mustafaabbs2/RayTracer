@@ -3,6 +3,7 @@
 
 #include "Vec3.hpp"
 #include "Ray.hpp"
+#include "Material.hpp"
 
 
 //Details about where the ray intersected the geometry
@@ -11,6 +12,7 @@ struct hit_record {
 	Vec3 p;
 	Vec3 normal;
 	double t;
+	std::shared_ptr<Material> matptr;
 
 };
 
