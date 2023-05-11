@@ -28,18 +28,18 @@ public:
 	}
 
 
-	bool hit(const Ray& ray, double tmin, double tmax, hit_record& rec) const override;
+	bool hit(const Ray& ray, double tmin, double tmax, Hit::hit_record& rec) const override;
 
 private:
 	std::vector<std::shared_ptr<Hitter>> objects;
 
 };
 
-bool HitterList::hit(const Ray& ray, double tmin, double tmax, hit_record& rec) const {
+bool HitterList::hit(const Ray& ray, double tmin, double tmax, Hit::hit_record& rec) const {
 
 	bool hitAnything = false;
 	auto closestT = tmax;
-	hit_record temp_rec;
+	Hit::hit_record temp_rec;
 	
 	for (const auto& object : objects)
 	{

@@ -3,6 +3,7 @@
 #include <iostream>
 
 // Define a color class with red, green, and blue components
+
 class Color {
 public:
     double r, g, b;

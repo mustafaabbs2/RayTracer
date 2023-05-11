@@ -8,13 +8,13 @@
 #include "Ray.hpp"
 
 #include "Hitter.hpp"
+#include "Material.hpp"
 #include "HitterList.hpp"
 #include "PPMWriter.hpp"
 #include "Sphere.hpp"
 #include "Utils.hpp"
 #include "Constants.hpp"
 #include "Camera.hpp"
-#include "Material.hpp"
 #include "Logger.hpp"
 
 //Note: the headers currently contain definitions too, they need to be put in their own source files to avoid high compilation times on changes
@@ -25,7 +25,7 @@
 
 Color rayColor(const Ray& ray, const HitterList& world, int depth) {
 
-        hit_record rec;
+        Hit::hit_record rec;
 
         if (depth <= 0)
             return Color(0, 0, 0);
@@ -58,7 +58,6 @@ int main() {
     HitterList world;
 
     auto matptr = std::make_shared<Material>();
-
 
     auto s1 = std::make_shared<Sphere>(Vec3(0, 0, -1), 0.5, matptr);
     auto s2 = std::make_shared<Sphere>(Vec3(0, -100.5, -1), 100, matptr);

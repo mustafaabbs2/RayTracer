@@ -12,7 +12,7 @@ public:
     }
 
     void endTimer() {
-        _stop = _start = std::chrono::high_resolution_clock::now();
+        _stop = std::chrono::high_resolution_clock::now();
         _duration = std::chrono::duration_cast<std::chrono::milliseconds>(_stop - _start);
         std::cout << "\nTime taken: " << _duration.count() << " milliseconds" << std::endl;
     }

@@ -1,12 +1,16 @@
 #pragma once
 
 #include "Ray.hpp"
-#include "Hitter.hpp"
 #include "Color.hpp"
 
+
+namespace Hit
+{
+	struct hit_record;
+} // namespace Hit
+
+
 class Material {
-
 public:
-	virtual bool scatter(const Ray& ray, const hit_record& rec, Color& attenuation, Ray& scattered) const = 0;
-
+	bool scatter(const Ray& ray, const Hit::hit_record& rec, Color& attenuation, Ray& scattered);
 };

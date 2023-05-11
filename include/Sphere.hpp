@@ -20,12 +20,12 @@ public:
     Sphere() {}
     Sphere(const Vec3& center, double radius, std::shared_ptr<Material> matptr) : _sphereCenter(center), _sphereRadius(radius), _matptr(matptr) {}
 
-    virtual bool hit(const Ray& ray, double tmin, double tmax, hit_record& rec) const override;
+    virtual bool hit(const Ray& ray, double tmin, double tmax, Hit::hit_record& rec) const override;
 };
 
 
 //calculate the "t" for which A + tB hits the sphere
-bool Sphere::hit(const Ray& ray, double tmin, double tmax, hit_record& rec) const {
+bool Sphere::hit(const Ray& ray, double tmin, double tmax, Hit::hit_record& rec) const {
     Vec3 oc = ray.getOrigin() - _sphereCenter;
     auto a = dot(ray.getDirection(), ray.getDirection());
     auto b = 2 * dot(oc, ray.getDirection());
