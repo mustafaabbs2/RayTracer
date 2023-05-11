@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Hitter.hpp"
 #include "HitterList.hpp"
 #include <memory>
