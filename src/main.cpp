@@ -53,8 +53,6 @@ Color rayColor(const Ray& ray, const HitterList& world, int depth) {
 int main() {
 
 
-    std::cout << "Preparing ray tracer... " << std::endl;
-
     HitterList world;
 
     auto matptr = std::make_shared<Material>();
@@ -75,11 +73,12 @@ int main() {
     auto camera = std::make_unique<Camera>(aspect_ratio);
 
     //antialiasing
-    const int samplesPerPixel = 10;
+    const int samplesPerPixel = 1;
 
     auto writer = std::make_unique<PPMWriter>("sphere_antialiased.ppm", width, height);
 
-    auto logger = std::make_unique<Logger>();
+    auto logger = std::make_unique<Logger<FileOutput>>();
+    logger->log("Starting time monitoring \n");
 
     logger->startTimer();
     
