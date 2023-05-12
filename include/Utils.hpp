@@ -12,3 +12,4 @@ Vec3 cross(const Vec3& a, const Vec3& b);
 
 // Utility function to compute the reflect direction of a vector given a surface normal
 Vec3 reflect(const Vec3& v, const Vec3& n);
+

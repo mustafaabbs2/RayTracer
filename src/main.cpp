@@ -12,10 +12,12 @@
 #include "Hitter.hpp"
 #include "HitterList.hpp"
 #include "Logger.hpp"
-#include "MaterialInterface.hpp"
 #include "PPMWriter.hpp"
 #include "Sphere.hpp"
 #include "Utils.hpp"
+
+#include "Lambertian.hpp"
+#include "Metal.hpp"
 
 //Note: the headers currently contain definitions too, they need to be put in their own source files to avoid high compilation times on changes
 
@@ -31,13 +33,12 @@ Color rayColor(const Ray& ray, const HitterList& world, int depth)
 
 	if(world.hit(ray, 0, infinity, rec))
 	{
-		//p + n is outside the object somewhere
-		//s is a random point in a unit sphere
-		//you want to randomize the direction with this to create diffuse surfaces
-		//without this, you can try a normal vector approach
-		//return 0.5 * Color(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
+		Ray scattered;
+		Color attenuation;
+		if(rec.matptr->scatter(ray, rec, attenuation, scattered))
+			return attenuation * rayColor(scattered, world, depth - 1);
 
-		Vec3 target = rec.p + rec.normal + randomInUnitSphere();
+		Vec3 target = rec.p + rec.normal + randomUnitVector();
 		return 0.5 * rayColor(Ray(rec.p, target - rec.p), world, depth - 1); //absorb half
 	}
 	//background
@@ -54,14 +55,20 @@ int main()
 
 	HitterList world;
 
-	//auto matptr = std::make_shared<Material>();
-	auto matptr = nullptr;
+	auto material_ground = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.8));
+	auto material_center = std::make_shared<Lambertian>(Color(0.7, 0.3, 0.3));
+	auto material_left = std::make_shared<Metal>(Color(0.8, 0.8, 0.8));
+	auto material_right = std::make_shared<Metal>(Color(0.8, 0.6, 0.2));
 
-	auto s1 = std::make_shared<Sphere>(Vec3(0, 0, -1), 0.5, matptr);
-	auto s2 = std::make_shared<Sphere>(Vec3(0, -100.5, -1), 100, matptr);
+	auto s1 = std::make_shared<Sphere>(Vec3(0, 0, -1), 0.5, material_center);
+	auto s2 = std::make_shared<Sphere>(Vec3(0, -100.5, -1), 100, material_ground);
+	auto s3 = std::make_shared<Sphere>(Vec3(-1, 0, -1), 0.5, material_left);
+	auto s4 = std::make_shared<Sphere>(Vec3(1, 0, -1), 0.5, material_right);
 
 	world.add(s1);
 	world.add(s2);
+	world.add(s3);
+	world.add(s4);
 
 	const auto aspect_ratio = 16.0 / 9.0;
 	const int width = 400;
@@ -73,9 +80,9 @@ int main()
 
 	auto camera = std::make_unique<Camera>(aspect_ratio);
 	//antialiasing
-	const int samplesPerPixel = 1;
+	const int samplesPerPixel = 100;
 
-	auto writer = std::make_unique<PPMWriter>("sphere_antialiased.ppm", width, height);
+	auto writer = std::make_unique<PPMWriter>("new.ppm", width, height);
 
 	logger->log("Image generation");
 	logger->startTimer();

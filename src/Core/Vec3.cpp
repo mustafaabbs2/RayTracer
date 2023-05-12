@@ -1,22 +1,5 @@
 
 #include "Vec3.hpp"
-#include <random>
-
-// Returns a random real in [0,1).
-double random_double()
-{
-	static std::uniform_real_distribution<double> distribution(0.0, 1.0);
-	static std::mt19937 generator;
-	return distribution(generator);
-}
-
-// Returns a random real in [min,max).
-double random_double(double min, double max)
-{
-	static std::uniform_real_distribution<double> distribution(min, max);
-	static std::mt19937 generator;
-	return distribution(generator);
-}
 
 Vec3::Vec3() { }
 Vec3::Vec3(double x, double y, double z)
@@ -65,6 +48,15 @@ Vec3 Vec3::normalize() const
 	double len = length();
 	return Vec3(x / len, y / len, z / len);
 }
+
+bool Vec3::almostZero() const
+{
+	const auto tol = 1e-8;
+
+	if((fabs(x) < tol) && (fabs(y) < tol) && (fabs(z) < tol))
+		return true;
+}
+
 //note: type qualifiers aren't allowed on static functions since they don't access the this pointer of a class
 //i.e. static functions cannot have a const or volatile type qualifier
 Vec3 Vec3::random()
@@ -97,4 +89,9 @@ Vec3 randomInUnitSphere()
 			continue;
 		return p;
 	}
+}
+
+Vec3 randomUnitVector()
+{
+	return randomInUnitSphere().normalize();
 }

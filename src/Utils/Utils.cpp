@@ -1,4 +1,22 @@
 #include "Utils.hpp"
+#include <random>
+
+// Returns a random real in [0,1).
+double random_double()
+{
+	static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+	static std::mt19937 generator;
+	return distribution(generator);
+}
+
+// Returns a random real in [min,max).
+double random_double(double min, double max)
+{
+	static std::uniform_real_distribution<double> distribution(min, max);
+	static std::mt19937 generator;
+	return distribution(generator);
+}
+
 // Utility function to clamp a value between a minimum and maximum
 double clamp(double value, double min, double max)
 {
