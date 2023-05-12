@@ -80,7 +80,7 @@ int main()
 
 	auto camera = std::make_unique<Camera>(aspect_ratio);
 	//antialiasing
-	const int samplesPerPixel = 200;
+	const int samplesPerPixel = 1;
 
 	auto writer = std::make_unique<PPMWriter>("new.ppm", width, height);
 
@@ -103,10 +103,13 @@ int main()
 				}
 			}
 
-			writer->WritePixelToFile(cumulativeColor, samplesPerPixel);
+			writer->WritePixelsToBuffer(cumulativeColor, samplesPerPixel);
 #endif
 		}
+	
 	}
+
+	writer->WriteToFile();
 
 	logger->endTimer();
 

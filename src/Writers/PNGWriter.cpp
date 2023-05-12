@@ -1,10 +1,16 @@
-#include "PPMWriter.hpp"
+#include "PNGWriter.hpp"
 
 PPMWriter::PPMWriter(std::string filename, const int width, const int height)
 	: _filename(filename)
 	, _width(width)
 	, _height(height)
 {
+	_outfile = std::make_unique<std::ofstream>(filename);
+
+	if(!filename.empty())
+		*_outfile << "P3\n" << _width << " " << _height << "\n255\n";
+	else
+		throw std::runtime_error("Empty file name \n");
 }
 
 // Output the image in PPM format
@@ -24,21 +30,6 @@ void PPMWriter::WritePixelsToBuffer(const Color& pixel, const int samplesPerPixe
 	auto g_p = static_cast<int>(256 * clamp(g, 0.0, 0.999));
 	auto b_p = static_cast<int>(256 * clamp(b, 0.0, 0.999));
 
-	_buffer << r_p << " " << g_p << " " << b_p << " "
-			 << "\n";
-}
-
-void PPMWriter::WriteToFile() const
-{
-	_outfile = std::ofstream(_filename);
-
-	if(!_filename.empty())
-		_outfile << "P3\n" << _width << " " << _height << "\n255\n";
-	else
-		throw std::runtime_error("Empty file name \n");
-
-	std::string buffer_contents = _buffer.str();
-	_outfile << buffer_contents;
-
-	_outfile.close();
+	*_outfile << r_p << " " << g_p << " " << b_p << " "
+			  << "\n";
 }
