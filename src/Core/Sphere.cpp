@@ -2,7 +2,7 @@
 #include "Ray.hpp"
 #include "Utils.hpp"
 #include "Hitter.hpp"
-#include "Material.hpp"
+#include "MaterialInterface.hpp"
 
 #include "Sphere.hpp"
 

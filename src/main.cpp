@@ -8,7 +8,7 @@
 #include "Ray.hpp"
 
 #include "Hitter.hpp"
-#include "Material.hpp"
+#include "MaterialInterface.hpp"
 #include "HitterList.hpp"
 #include "Sphere.hpp"
 #include "Utils.hpp"
@@ -73,18 +73,14 @@ int main() {
 
     auto logger = std::make_unique<Logger<ConsoleOutput>>();
 
-    logger->log("Camera creation");
-    logger->startTimer();
-    logger->sleep(5);
     auto camera = std::make_unique<Camera>(aspect_ratio);
-    logger->endTimer();
     //antialiasing
     const int samplesPerPixel = 1;
 
     auto writer = std::make_unique<PPMWriter>("sphere_antialiased.ppm", width, height);
 
-    logger->log("Image generation");
 
+    logger->log("Image generation");
     logger->startTimer();
     
     for (size_t j = height; j > 0; --j) {

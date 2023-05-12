@@ -3,7 +3,7 @@
 
 #include "Vec3.hpp"
 #include "Ray.hpp"
-#include "Material.hpp"
+#include "MaterialInterface.hpp"
 #include <memory>
 
 
