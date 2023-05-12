@@ -26,22 +26,17 @@ set(SOURCES
 # Add executable target
 add_executable(RayTracer ${SOURCES})
 
-#find_package(Boost REQUIRED)
-#if(Boost_FOUND)
-#    message(STATUS "Boost found: ${Boost_INCLUDE_DIRS}")
-#else()
-#    message(FATAL_ERROR "Could NOT find Boost (missing: Boost_INCLUDE_DIR)")
-#endif()
 
-set(Boost_INCLUDE_DIRS "D:\\Mustafa\\gil\\include")
-
-include_directories(${Boost_INCLUDE_DIRS})
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIR})
 
 
 # Add include directories
 target_include_directories(RayTracer PRIVATE 
-${Boost_INCLUDE_DIRS}
+${PNG_INCLUDE_DIR}
 include/)
+
+target_link_libraries(RayTracer PNG::PNG)
 
 
 
