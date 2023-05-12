@@ -14,7 +14,7 @@ namespace Hit {
 		Vec3 p;
 		Vec3 normal;
 		double t;
-		std::shared_ptr<Material> matptr;
+		std::shared_ptr<MaterialInterface> matptr;
 	};
 }//namespace Hit
 

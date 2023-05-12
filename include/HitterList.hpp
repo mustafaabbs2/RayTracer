@@ -4,12 +4,11 @@
 #include <memory>
 #include <vector>
 
-
 //List of hitter objects
-class HitterList : public Hitter {
+class HitterList : public Hitter
+{
 
 public:
-
 	HitterList();
 	HitterList(std::shared_ptr<Hitter> object);
 
@@ -19,6 +18,4 @@ public:
 
 private:
 	std::vector<std::shared_ptr<Hitter>> objects;
-
 };
-

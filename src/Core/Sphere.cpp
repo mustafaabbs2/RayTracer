@@ -8,7 +8,7 @@
 
 
 Sphere::Sphere() {}
-Sphere::Sphere(const Vec3& center, double radius, std::shared_ptr<Material> matptr) : _sphereCenter(center), _sphereRadius(radius), _matptr(matptr) {}
+Sphere::Sphere(const Vec3& center, double radius, std::shared_ptr<MaterialInterface> matptr) : _sphereCenter(center), _sphereRadius(radius), _matptr(matptr) {}
 
 
 //calculate the "t" for which A + tB hits the sphere

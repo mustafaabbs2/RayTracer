@@ -1,12 +1,11 @@
 #pragma once
 
-#include "WriterInterface.hpp"
 #include "Utils.hpp"
+#include "WriterInterface.hpp"
 #include <fstream>
 #include <memory>
 
-
-class PPMWriter : public WriterInterface 
+class PPMWriter : public WriterInterface
 
 {
 public:
@@ -15,9 +14,7 @@ public:
 	void WritePixelToFile(const Color& pixel, const int samplesPerPixel) const override;
 
 private:
-    int _width, _height;
-    std::string _filename;
-    std::unique_ptr<std::ofstream> _outfile;
-
+	int _width, _height;
+	std::string _filename;
+	std::unique_ptr<std::ofstream> _outfile;
 };
-

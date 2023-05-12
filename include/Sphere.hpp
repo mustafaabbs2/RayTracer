@@ -15,10 +15,10 @@ class Sphere : public Hitter {
 public:
     Vec3 _sphereCenter;
     double _sphereRadius;
-    std::shared_ptr<Material> _matptr;
+    std::shared_ptr<MaterialInterface> _matptr;
 
     Sphere();
-    Sphere(const Vec3& center, double radius, std::shared_ptr<Material> matptr);
+    Sphere(const Vec3& center, double radius, std::shared_ptr<MaterialInterface> matptr);
     virtual bool hit(const Ray& ray, double tmin, double tmax, Hit::hit_record& rec) const override;
 };
 

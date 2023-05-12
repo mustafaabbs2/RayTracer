@@ -11,7 +11,7 @@ namespace Hit
 
 
 //Abstract
-class Material {
+class MaterialInterface {
 public:
 	virtual bool scatter(const Ray& ray, const Hit::hit_record& rec, Color& attenuation, Ray& scattered) const = 0;
 };

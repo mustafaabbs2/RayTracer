@@ -12,6 +12,8 @@ set(SOURCES
     src/Core/Color.cpp
     src/Core/HitterList.cpp
     src/Core/Material.cpp
+    src/Core/Metal.cpp
+    src/Core/Lambertian.cpp
     src/Core/Ray.cpp
     src/Core/Vec3.cpp
     src/Core/Sphere.cpp
