@@ -9,4 +9,4 @@ Run make on Linux/ Build RayTracer.sln on Windows
 
 # Sample
 
-![Spheres](samples\new.ppm)
+![Spheres](RayTracer/samples/new.ppm)
