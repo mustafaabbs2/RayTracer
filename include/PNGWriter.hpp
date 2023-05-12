@@ -4,7 +4,8 @@
 #include "WriterInterface.hpp"
 #include <fstream>
 #include <memory>
-
+#include <sstream>
+#include <vector>
 class PNGWriter : public WriterInterface
 
 {
@@ -17,4 +18,5 @@ private:
 	int _width, _height;
 	std::string _filename;
 	mutable std::ofstream _outfile;
+	mutable std::vector<int> _buffer;
 };

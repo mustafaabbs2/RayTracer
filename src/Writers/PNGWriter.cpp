@@ -13,9 +13,23 @@ void PNGWriter::WritePixelsToBuffer(const Color& pixel, const int samplesPerPixe
 	auto r = pixel.r;
 	auto g = pixel.g;
 	auto b = pixel.b;
+
+	auto scale = 1.0 / samplesPerPixel;
+	r = std::sqrt(scale * r);
+	g = std::sqrt(scale * g);
+	b = std::sqrt(scale * b);
+	////https://en.wikipedia.org/wiki/Gamma_correction
+
+	auto r_p = static_cast<int>(256 * clamp(r, 0.0, 0.999));
+	auto g_p = static_cast<int>(256 * clamp(g, 0.0, 0.999));
+	auto b_p = static_cast<int>(256 * clamp(b, 0.0, 0.999));
+
+	_buffer.push_back(r_p);
+	_buffer.push_back(g_p);
+	_buffer.push_back(b_p);
 }
 
-static void write_png_file(const char* filename, int width, int height)
+static void write_png_file(const char* filename, int width, int height, int* buffer)
 {
 	FILE* fp;
 	png_structp png_ptr = NULL;
@@ -71,9 +85,9 @@ static void write_png_file(const char* filename, int width, int height)
 	{
 		for(int x = 0; x < width; x++)
 		{
-			row[3 * x + 0] = (x + y) % 256; // Red
-			row[3 * x + 1] = x % 256; // Green
-			row[3 * x + 2] = y % 256; // Blue
+			row[3 * x + 0] = buffer[x + y]; // Red
+			row[3 * x + 1] = buffer[x + y + 1]; // Green
+			row[3 * x + 2] = buffer[x + y + 2]; // Blue
 		}
 		png_write_row(png_ptr, row);
 	}
@@ -87,5 +101,5 @@ static void write_png_file(const char* filename, int width, int height)
 
 void PNGWriter::WriteToFile() const
 {
-	write_png_file(_filename.c_str(), _width, _height);
+	write_png_file(_filename.c_str(), _width, _height, _buffer.data());
 }
