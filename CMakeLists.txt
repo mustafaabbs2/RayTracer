@@ -19,6 +19,7 @@ set(SOURCES
     src/Core/Sphere.cpp
     src/Core/Camera.cpp
     src/Writers/PPMWriter.cpp
+    src/Writers/PNGWriter.cpp
     src/Utils/Utils.cpp
     src/Utils/Logger.cpp
 )
