@@ -34,5 +34,5 @@ public:
 Vec3 operator*(double s, const Vec3& other);
 Vec3 operator*(const Vec3& other, double s);
 Vec3 randomInUnitSphere();
+Vec3 randomInHemishphere(const Vec3& normal);
 Vec3 randomUnitVector();
-

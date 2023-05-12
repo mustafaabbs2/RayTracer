@@ -26,9 +26,9 @@ void PPMWriter::WritePixelToFile(const Color& pixel, const int samplesPerPixel) 
 	b = std::sqrt(scale * b);
 	////https://en.wikipedia.org/wiki/Gamma_correction
 
-	auto r_p = static_cast<int>(255 * clamp(r, 0, 1));
-	auto g_p = static_cast<int>(255 * clamp(g, 0, 1));
-	auto b_p = static_cast<int>(255 * clamp(b, 0, 1));
+	auto r_p = static_cast<int>(256 * clamp(r, 0.0, 0.999));
+	auto g_p = static_cast<int>(256 * clamp(g, 0.0, 0.999));
+	auto b_p = static_cast<int>(256 * clamp(b, 0.0, 0.999));
 
 	*_outfile << r_p << " " << g_p << " " << b_p << " "
 			  << "\n";

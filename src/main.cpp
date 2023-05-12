@@ -31,7 +31,7 @@ Color rayColor(const Ray& ray, const HitterList& world, int depth)
 	if(depth <= 0)
 		return Color(0, 0, 0);
 
-	if(world.hit(ray, 0, infinity, rec))
+	if(world.hit(ray, 0.001, infinity, rec))
 	{
 		Ray scattered;
 		Color attenuation;
@@ -80,7 +80,7 @@ int main()
 
 	auto camera = std::make_unique<Camera>(aspect_ratio);
 	//antialiasing
-	const int samplesPerPixel = 100;
+	const int samplesPerPixel = 200;
 
 	auto writer = std::make_unique<PPMWriter>("new.ppm", width, height);
 

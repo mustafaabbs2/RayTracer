@@ -55,6 +55,8 @@ bool Vec3::almostZero() const
 
 	if((fabs(x) < tol) && (fabs(y) < tol) && (fabs(z) < tol))
 		return true;
+	
+	return false; 
 }
 
 //note: type qualifiers aren't allowed on static functions since they don't access the this pointer of a class
@@ -89,6 +91,15 @@ Vec3 randomInUnitSphere()
 			continue;
 		return p;
 	}
+}
+
+Vec3 randomInHemishphere(const Vec3& normal)
+{
+	Vec3 inUnitSphere = randomInUnitSphere();
+	if(inUnitSphere.dot(normal) > 0.0)
+		return inUnitSphere;
+	else
+		return -1 * inUnitSphere;
 }
 
 Vec3 randomUnitVector()
