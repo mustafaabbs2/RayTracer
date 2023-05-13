@@ -27,6 +27,8 @@ void PNGWriter::WritePixelsToBuffer(const Color& pixel, const int samplesPerPixe
 	_buffer.push_back(r_p);
 	_buffer.push_back(g_p);
 	_buffer.push_back(b_p);
+
+	//buffer is 250 250 250    230 230 230  230 230 220
 }
 
 static void write_png_file(const char* filename, int width, int height, int* buffer)
@@ -85,9 +87,10 @@ static void write_png_file(const char* filename, int width, int height, int* buf
 	{
 		for(int x = 0; x < width; x++)
 		{
-			row[3 * x + 0] = buffer[x + y]; // Red
-			row[3 * x + 1] = buffer[x + y + 1]; // Green
-			row[3 * x + 2] = buffer[x + y + 2]; // Blue
+			int index = (y * width + x) * 3; // calculate index of current pixel in the vector
+			row[3 * x + 0] = buffer[index]; // Red
+			row[3 * x + 1] = buffer[index + 1]; // Green
+			row[3 * x + 2] = buffer[index + 2]; // Blue
 		}
 		png_write_row(png_ptr, row);
 	}
