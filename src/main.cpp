@@ -3,54 +3,23 @@
 #include <iostream>
 #include <vector>
 
-#include "Color.hpp"
-#include "Ray.hpp"
-#include "Vec3.hpp"
-
 #include "Camera.hpp"
+#include "Color.hpp"
 #include "Constants.hpp"
 #include "Hitter.hpp"
 #include "HitterList.hpp"
 #include "Logger.hpp"
 #include "PNGWriter.hpp"
 #include "PPMWriter.hpp"
-
-#include "Sphere.hpp"
-#include "Utils.hpp"
+#include "Ray.hpp"
+#include "Vec3.hpp"
 
 #include "Lambertian.hpp"
 #include "Metal.hpp"
-
-//Note: the headers currently contain definitions too, they need to be put in their own source files to avoid high compilation times on changes
+#include "Sphere.hpp"
+#include "Utils.hpp"
 
 #define WRITE 1
-
-Color rayColor(const Ray& ray, const HitterList& world, int depth)
-{
-
-	Hit::hit_record rec;
-
-	if(depth <= 0)
-		return Color(0, 0, 0);
-
-	if(world.hit(ray, 0.001, infinity, rec))
-	{
-		Ray scattered;
-		Color attenuation;
-		if(rec.matptr->scatter(ray, rec, attenuation, scattered))
-			return attenuation * rayColor(scattered, world, depth - 1);
-
-		Vec3 target = rec.p + rec.normal + randomUnitVector();
-		return 0.5 * rayColor(Ray(rec.p, target - rec.p), world, depth - 1); //absorb half
-	}
-	//background
-	{
-		auto unitDirection = ray.getDirection().normalize();
-		auto t = 0.5 * (unitDirection.y + 1.0);
-		return (1.0 - t) * Color(1.0, 1.0, 1.0) +
-			   t * Color(0.5, 0.7, 1.0); //gradient from white to blue
-	}
-}
 
 int main()
 {
@@ -84,7 +53,8 @@ int main()
 	//antialiasing
 	const int samplesPerPixel = 100;
 
-	auto writer = std::make_unique<PNGWriter>("new-image.png", width, height);
+	auto writer = std::make_unique<PPMWriter>("new-image2.ppm", width, height);
+	// auto writer = std::make_unique<PNGWriter>("new-image2.png", width, height);
 
 	logger->log("Image generation");
 	logger->startTimer();
@@ -99,9 +69,8 @@ int main()
 				auto x = double(i + random_double()) / (width - 1);
 				auto y = double(j + random_double()) / (height - 1);
 #if WRITE
-				{
-					Ray ray = camera->getRay(x, y);
-					cumulativeColor = cumulativeColor + rayColor(ray, world, maxDepth);
+				{ //section that should be parallelized - s is run 200+ times
+					addRayColor(x, y, cumulativeColor, camera.get(), world, maxDepth);
 				}
 			}
 

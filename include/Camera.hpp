@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Constants.hpp"
-#include "Utils.hpp"
 #include "Vec3.hpp"
 #include "Ray.hpp"
 
