@@ -31,7 +31,7 @@ public:
 
 private:
 	void workerThread();
-	std::vector<std::thread> threads_;
+	std::vector<std::thread> threads_; //this is the thread pool
 	std::queue<WorkItem> workQueue_;
 	std::mutex mutex_;
 	std::condition_variable condition_; //how to use this?

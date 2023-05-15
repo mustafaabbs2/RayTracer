@@ -21,7 +21,7 @@
 
 #include "ThreadPool.hpp"
 
-#define PARALLEL 0
+#define PARALLEL 1
 
 int main()
 {
@@ -52,13 +52,13 @@ int main()
 
 	Camera cam = Camera(aspect_ratio);
 	//antialiasing
-	const int samplesPerPixel = 100;
+	const int samplesPerPixel = 10;
 
 	auto writer = std::make_unique<PPMWriter>("new-image2.ppm", width, height);
 	// auto writer = std::make_unique<PNGWriter>("new-image2.png", width, height);
 
 #if PARALLEL
-	ThreadPool threadPool(4);
+	ThreadPool threadPool(2);
 #endif
 	logger->log("Image generation");
 	logger->startTimer();
