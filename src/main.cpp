@@ -19,11 +19,12 @@
 #include "Sphere.hpp"
 #include "Utils.hpp"
 
-#define WRITE 1
+#include "ThreadPool.hpp"
+
+#define PARALLEL 0
 
 int main()
 {
-
 	HitterList world;
 
 	auto material_ground = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.8));
@@ -49,13 +50,16 @@ int main()
 
 	auto logger = std::make_unique<Logger<ConsoleOutput>>();
 
-	auto camera = std::make_unique<Camera>(aspect_ratio);
+	Camera cam = Camera(aspect_ratio);
 	//antialiasing
 	const int samplesPerPixel = 100;
 
 	auto writer = std::make_unique<PPMWriter>("new-image2.ppm", width, height);
 	// auto writer = std::make_unique<PNGWriter>("new-image2.png", width, height);
 
+#if PARALLEL
+	ThreadPool threadPool(4);
+#endif
 	logger->log("Image generation");
 	logger->startTimer();
 
@@ -68,14 +72,19 @@ int main()
 			{
 				auto x = double(i + random_double()) / (width - 1);
 				auto y = double(j + random_double()) / (height - 1);
-#if WRITE
 				{ //section that should be parallelized - s is run 200+ times
-					addRayColor(x, y, cumulativeColor, camera.get(), world, maxDepth);
+#if PARALLEL
+					// parallel
+					WorkItem item{i, j, s, x, y, cumulativeColor, cam, world};
+					threadPool.addWorkItem(item);
+#else
+					// serial
+					addRayColor(x, y, cumulativeColor, cam, world, maxDepth);
+#endif
 				}
 			}
 
 			writer->WritePixelsToBuffer(cumulativeColor, samplesPerPixel);
-#endif
 		}
 	}
 

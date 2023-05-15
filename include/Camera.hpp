@@ -7,6 +7,7 @@
 class Camera {
 
 public:
+	Camera();
 	Camera(const double aspect_ratio);
     Ray getRay(double x, double y);
 

@@ -23,6 +23,6 @@ Color rayColor(const Ray& ray, const HitterList& world, int depth);
 void addRayColor(double x,
 				 double y,
 				 Color& cumulativeColor,
-				 Camera* cam,
+				 Camera cam,
 				 const HitterList& world,
 				 const int maxDepth);

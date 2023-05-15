@@ -71,11 +71,11 @@ Color rayColor(const Ray& ray, const HitterList& world, int depth)
 
 void addRayColor(double x,
 				 double y,
-				 Color& cumulativeColor,
-				 Camera* cam,
+				 Color& cumulativeColor, //Should you do this?
+				 Camera cam,
 				 const HitterList& world,
 				 const int maxDepth)
 {
 	//parallelize this call...
-	cumulativeColor = cumulativeColor + rayColor(cam->getRay(x, y), world, maxDepth);
+	cumulativeColor = cumulativeColor + rayColor(cam.getRay(x, y), world, maxDepth);
 }

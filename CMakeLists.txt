@@ -18,6 +18,7 @@ set(SOURCES
     src/Core/Vec3.cpp
     src/Core/Sphere.cpp
     src/Core/Camera.cpp
+    src/Core/ThreadPool.cpp
     src/Writers/PPMWriter.cpp
     src/Writers/PNGWriter.cpp
     src/Utils/Utils.cpp

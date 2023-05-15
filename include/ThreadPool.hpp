@@ -1,9 +1,14 @@
 // A work item represents a single task to be executed
-#include "Color.hpp"
+#include <future>
 #include <mutex>
 #include <queue>
 #include <thread>
 #include <vector>
+
+#include "Camera.hpp"
+#include "Color.hpp"
+#include "HitterList.hpp"
+
 
 struct WorkItem
 {
@@ -12,8 +17,9 @@ struct WorkItem
 	size_t s;
 	double x;
 	double y;
-	HitterList world;
+	Color cumulativeColor;
 	Camera cam;
+	HitterList world;
 };
 
 class ThreadPool
@@ -25,7 +31,7 @@ public:
 
 private:
 	void workerThread();
-	std::vector<std::thread> _threads;
+	std::vector<std::thread> threads_;
 	std::queue<WorkItem> workQueue_;
 	std::mutex mutex_;
 	std::condition_variable condition_; //how to use this?
