@@ -24,6 +24,7 @@
 #define PARALLEL 0
 #define CUDA 1
 #define SKIP 0
+#define DEBUG 0
 
 #include "KernelWrapper.h"
 
@@ -48,7 +49,7 @@ int main()
 
 	const auto aspect_ratio = 16.0 / 9.0;
 	const int width = 400;
-	const int height = static_cast<int>(width / aspect_ratio);
+	const int height = static_cast<size_t>(width / aspect_ratio);
 
 	const int maxDepth = 50; //ray recursion
 
@@ -60,44 +61,52 @@ int main()
 
 	auto writer = std::make_unique<PPMWriter>("new-image2.ppm", width, height);
 	// auto writer = std::make_unique<PNGWriter>("new-image2.png", width, height);
-
-	RayKernelWrapper();
+#if DEBUG
+	deviceHelloWorld();
+#endif
 
 #if PARALLEL
 	ThreadPool threadPool(2);
 #endif
+
 	logger->log("Image generation");
 	logger->startTimer();
 
+#if CUDA
+	{
+		//do something
+		deviceRayKernel(width, height, samplesPerPixel);
+
+	}
+#else
+//parallel or serial
 	for(size_t j = height; j > 0; --j)
 	{
 		for(size_t i = 0; i < width; ++i)
 		{
 			Color cumulativeColor(0, 0, 0);
+
 			for(size_t s = 0; s < samplesPerPixel; ++s)
 			{
 				auto x = double(i + random_double()) / (width - 1);
 				auto y = double(j + random_double()) / (height - 1);
 				{ //section that should be parallelized - s is run 200+ times
-#if PARALLEL
+#	if PARALLEL
 					// parallel
 					WorkItem item{i, j, s, x, y, cumulativeColor, cam, world};
 					threadPool.addWorkItem(item);
-#else
-
-#	if CUDA
-					//do nothing now
 #	else
+
 					// serial
 					addRayColor(x, y, cumulativeColor, cam, world, maxDepth);
 #	endif
-#endif
 				}
 			}
 
 			writer->WritePixelsToBuffer(cumulativeColor, samplesPerPixel);
 		}
 	}
+#endif
 
 	writer->WriteToFile();
 
