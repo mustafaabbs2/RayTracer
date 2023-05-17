@@ -21,7 +21,11 @@
 
 #include "ThreadPool.hpp"
 
-#define PARALLEL 1
+#define PARALLEL 0
+#define CUDA 1
+#define SKIP 0
+
+#include "KernelWrapper.h"
 
 int main()
 {
@@ -57,6 +61,8 @@ int main()
 	auto writer = std::make_unique<PPMWriter>("new-image2.ppm", width, height);
 	// auto writer = std::make_unique<PNGWriter>("new-image2.png", width, height);
 
+	RayKernelWrapper();
+
 #if PARALLEL
 	ThreadPool threadPool(2);
 #endif
@@ -78,8 +84,13 @@ int main()
 					WorkItem item{i, j, s, x, y, cumulativeColor, cam, world};
 					threadPool.addWorkItem(item);
 #else
+
+#	if CUDA
+					//do nothing now
+#	else
 					// serial
 					addRayColor(x, y, cumulativeColor, cam, world, maxDepth);
+#	endif
 #endif
 				}
 			}
