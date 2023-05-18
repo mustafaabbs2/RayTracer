@@ -23,7 +23,7 @@
 
 #define PARALLEL 0
 #define CUDA 1
-#define SKIP 0
+#define SKIP 1
 #define DEBUG 0
 
 #include "KernelWrapper.h"
@@ -59,11 +59,17 @@ int main()
 	//antialiasing
 	const int samplesPerPixel = 10;
 
+
 	auto writer = std::make_unique<PPMWriter>("new-image2.ppm", width, height);
 	// auto writer = std::make_unique<PNGWriter>("new-image2.png", width, height);
+
+
 #if DEBUG
 	deviceHelloWorld();
 #endif
+
+
+#if SKIP
 
 #if PARALLEL
 	ThreadPool threadPool(2);
@@ -111,6 +117,8 @@ int main()
 	writer->WriteToFile();
 
 	logger->endTimer();
+
+#endif
 
 	return 0;
 }

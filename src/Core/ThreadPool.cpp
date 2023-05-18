@@ -1,9 +1,12 @@
 #include "ThreadPool.hpp"
 #include "Utils.hpp"
+#include <chrono>
+#include <iostream>
+#include <future>
 
 ThreadPool::ThreadPool(size_t num_threads)
 {
-	for(size_t i = 0; i < num_threads; i++)
+	for(size_t i = 0; i < num_threads; i++) 
 	{
 		threads_.emplace_back(std::bind(&ThreadPool::workerThread, this));
 	}
@@ -51,3 +54,37 @@ void ThreadPool::addWorkItem(const WorkItem& item)
 	workQueue_.push(item);
 	condition_.notify_one();
 }
+
+//example background process doing work
+
+void ThreadPoolHelper::loader()
+{
+	size_t bytesLoaded = 0;
+	while(bytesLoaded < 20000)
+	{
+	std::cout << "Loading dummy data... \n";
+	std::this_thread::sleep_for(std::chrono::milliseconds(200));
+	bytesLoaded += 1000;
+	}
+}
+
+void ThreadPoolHelper::worker()
+{
+	std::future<void> backgroundThread = std::async(std::launch::async, loader);
+	std::future_status status;
+	
+	while(true){
+	
+		std::cout << "Doing some work on the main thread \n";
+		
+		status = backgroundThread.wait_for(std::chrono::milliseconds(50));
+
+		if(status == std::future_status::ready)
+		{
+			std::cout << "Data is ready \n";
+			break;
+		}
+	}
+
+}
+

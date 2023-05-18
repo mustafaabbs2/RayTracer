@@ -22,6 +22,8 @@ struct WorkItem
 	HitterList world;
 };
 
+
+//Create a thread pool that's informing other threads about completed work
 class ThreadPool
 {
 public:
@@ -34,6 +36,14 @@ private:
 	std::vector<std::thread> threads_; //this is the thread pool
 	std::queue<WorkItem> workQueue_;
 	std::mutex mutex_;
-	std::condition_variable condition_; //how to use this?
+	std::condition_variable condition_;
 	bool stop_ = false;
 };
+
+
+namespace ThreadPoolHelper
+{
+void loader();
+void worker();
+
+} // namespace ThreadPoolHelper

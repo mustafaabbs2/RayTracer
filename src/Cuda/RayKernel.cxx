@@ -7,14 +7,6 @@ __global__ void cuda_hello()
 }
 
 
-__device__ float generateRandomNumber(curandState* state)
-{
-	unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
-	curand_init(0, tid, 0, state); // Initialize the random number generator state
-	return curand_uniform(state); // Generate a random number between 0 and 1
-}
-
-
 
 __global__ void
 add_ray_color(size_t width, size_t height, size_t samplesPerPixel, Color* cumulativeColors)
@@ -66,13 +58,6 @@ void deviceRayKernel(size_t width, size_t height, size_t samplesPerPixel)
 	
 	cudaMalloc((void**)&devCumulativeColors, memorySize);
 	cudaMemset(devCumulativeColors, 0, memorySize);
-
-	// Launch the CUDA kernel function
-	dim3 blockDim(8, 8, 8); // Specify the number of threads per block
-	dim3 gridDim((width + blockDim.x - 1) / blockDim.x,
-				 (height + blockDim.y - 1) / blockDim.y,
-				 (samplesPerPixel + blockDim.z - 1) / blockDim.z); // Calculate grid dimensions
-
 
 	add_ray_color<<<gridDim, blockDim>>>(width, height, samplesPerPixel, devCumulativeColors);
 
